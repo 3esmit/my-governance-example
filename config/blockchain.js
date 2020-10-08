@@ -50,13 +50,15 @@ module.exports = {
     ]
   },
 
-  testnet: {
-    networkType: "testnet", // Can be: testnet(ropsten), rinkeby, livenet or custom, in which case, it will use the specified networkId
+  ropsten: {
+    networkType: "ropsten", // Can be: ropsten(ropsten), rinkeby, livenet or custom, in which case, it will use the specified networkId
     syncMode: "light",
+    nodiscover: false, //false enables p2p connections (default true)
+    maxpeers: 25,//must be a number higher than zero (default 0)
     accounts: [
       {
         nodeAccounts: true,
-        password: "config/testnet/password"
+        password: "config/ropsten/.password"
       }
     ]
   },

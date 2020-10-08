@@ -85,4 +85,9 @@ contract MyGovernance {
     function totalProposals() public view returns(uint256 total){
         return proposals.length;
     }
+    
+    function getVotes(uint256 _proposalId) public view returns (uint256 approved, uint256 rejected, bool executed) {
+        Ballot storage ballot = ballots[_proposalId];
+        return (ballot.approved, ballot.rejected, ballot.executed);
+    }
 }
