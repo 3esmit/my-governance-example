@@ -14,7 +14,7 @@ module.exports = {
     // Automatically call `ethereum.enable` if true.
     // If false, the following code must run before sending any transaction: `await EmbarkJS.enableEthereum();`
     // Default value is true.
-    // dappAutoEnable: true,
+    dappAutoEnable: false,
 
     gas: "auto",
 
@@ -37,6 +37,14 @@ module.exports = {
       //  args: [ 100 ]
       //}
     }
+  },
+
+  ropsten: {
+    dappConnection: [
+      "$WEB3",
+      "ws://localhost:8546",
+      "http://localhost:8545"
+    ],
   },
 
   // default environment, merges with the settings in default

@@ -23,8 +23,8 @@ module.exports = {
   },
 
   // merges with the settings in default
-  // used with "embark run testnet"
-  testnet: {
+  // used with "embark run ropsten"
+  ropsten: {
   },
 
   // merges with the settings in default

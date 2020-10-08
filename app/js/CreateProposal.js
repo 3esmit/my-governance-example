@@ -1,6 +1,10 @@
 import MyGovernance from '../../embarkArtifacts/contracts/MyGovernance';
 import React from 'react';
 import {Form, FormGroup, Input, Button, FormText} from 'reactstrap';
+import moment from 'moment';
+import Datetime from 'react-datetime';
+import "react-datetime/css/react-datetime.css";
+import TransactionSubmitButton from './components/TransactionSubmitButton';
 
 class CreateProposal extends React.Component {
 
@@ -10,67 +14,73 @@ class CreateProposal extends React.Component {
     this.state = {
         proposalDestination: "0x0000000000000000000000000000000000000000",
         proposalCalldata: "0x",
-        startTime: 0,
-        endTime: 0,
-        contenthash: "0x"
+        startTime: moment(),
+        endTime: moment(),
+        contenthash: "0x",
+        timestamp: 0,
+        defaultAccount: null
     };
   }
 
   handleChange(v, e) {
-    this.setState({ [v]: e.target.value });
+    console.log(v,e)
+    this.setState({ [v]: e });
   }
 
-  checkEnter(e, func) {
-    if (e.key !== 'Enter') {
-      return;
+  componentDidUpdate(prevProps, prevState, snapshot){
+    const {latestBlock, accounts} = this.props;
+    const {defaultAccount, timestamp} = this.state;
+    if(latestBlock && latestBlock.timestamp != timestamp) {
+      this.setState({timestamp: latestBlock.timestamp});
     }
-    e.preventDefault();
-    func.apply(this, [e]);
-  }
-
-  async addProposal(e) {
-    e.preventDefault();
-    const {proposalDestination, proposalCalldata, startTime, endTime, contenthash} = this.state;
-    const result = await MyGovernance.methods.createProposal(proposalDestination, proposalCalldata, startTime, endTime, contenthash).send({gas: 1000000});
-    
+    const currentDefault = web3.eth.defaultAccount || accounts[0];
+    if(accounts && accounts.length > 0 && defaultAccount != currentDefault){
+      this.setState({defaultAccount: currentDefault});
+    }
   }
 
   render() {
+    const {defaultAccount, timestamp, proposalDestination, proposalCalldata, startTime, endTime, contenthash} = this.state;
     return (<React.Fragment>
         <h3> Create a Proposal</h3>
-        <Form onKeyDown={(e) => this.checkEnter(e, this.addProposal)}>
+        <Form>
             <FormGroup className="inline-input-btn">
             <small className="text-secondary">Proposal Destination:</small>
             <Input
                 type="text"
-                defaultValue={this.state.proposalDestination}
-                onChange={(e) => this.handleChange('proposalDestination' ,e)}/>
+                defaultValue={proposalDestination}
+                onChange={(e) => this.handleChange('proposalDestination' ,e.target.value)}/>
 
             <small className="text-secondary">Proposal Calldata:</small>
             <Input
                 type="text"
-                defaultValue={this.state.proposalCalldata}
-                onChange={(e) => this.handleChange('proposalCalldata' ,e)}/>
+                defaultValue={proposalCalldata}
+                onChange={(e) => this.handleChange('proposalCalldata' ,e.target.value)}/>
 
             <small className="text-secondary">Vote period start:</small>
-            <Input
-                type="text"
-                defaultValue={this.state.startTime}
-                onChange={(e) => this.handleChange('startTime' ,e)}/>
-
+            <Datetime
+              value={startTime}
+              onChange={(e) => this.handleChange('startTime' ,e)}/>
+              
             <small className="text-secondary">Vote period end:</small>
-            <Input
-                type="text"
-                defaultValue={this.state.endTime}
-                onChange={(e) => this.handleChange('endTime' ,e)}/>
+            <Datetime
+              value={endTime}
+              onChange={(e) => this.handleChange('endTime' ,e)}/>
 
             <small className="text-secondary">Proposal Contenthash:</small>
             <Input
                 type="text"
-                defaultValue={this.state.contenthash}
-                onChange={(e) => this.handleChange('contenthash', e)}/>
-              
-            <Button color="primary" onClick={(e) => this.addProposal(e)}>Add Proposal</Button>
+                defaultValue={contenthash}
+                onChange={(e) => this.handleChange('contenthash', e.target.value)}/>
+            
+            <TransactionSubmitButton 
+              account={defaultAccount}
+              text="Add Proposal"
+              sendTransaction={
+                MyGovernance.methods.createProposal(proposalDestination, proposalCalldata, startTime.format('X'), endTime.format('X'), contenthash)
+              }
+              color="success"
+              />
             <FormText color="muted">Once you set the value, the transaction will need to be mined and then the value will be updated
               on the blockchain.</FormText>
           </FormGroup>

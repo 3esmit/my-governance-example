@@ -3,7 +3,13 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "test": "embark test"
+    "test": "embark test",
+    "run-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh run --wait-sync && embark run ropsten",
+    "eth-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh run",
+    "list-accs-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh --list-accounts",
+    "new-acc-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh --new-account",
+    "wait-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh --wait-sync",
+    "upload-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh run --wait-sync && embark upload ropsten"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +35,10 @@
   "dependencies": {
     "bootstrap": "^4.5.2",
     "classnames": "^2.2.6",
+    "env-cmd": "^10.1.0",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
+    "react-datetime": "^3.0.4",
     "react-dom": "^16.13.1",
     "reactstrap": "^8.6.0"
   }
