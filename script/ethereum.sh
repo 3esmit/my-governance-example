@@ -1,7 +1,7 @@
 export _V=0
 
 log () {
-    if [[ $_V -eq 1 ]]; then
+    if [ $_V -eq 1 ]; then
         echo "$@"
     fi
 }
