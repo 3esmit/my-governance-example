@@ -4,12 +4,12 @@
   "description": "",
   "scripts": {
     "test": "embark test",
-    "run-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh run --wait-sync && embark run ropsten",
-    "eth-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh run",
-    "list-accs-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh --list-accounts",
-    "new-acc-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh --new-account",
-    "wait-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh --wait-sync",
-    "upload-ropsten": "env-cmd -f ./config/ropsten/.env ./script/ethereum.sh run --wait-sync && embark upload ropsten"
+    "run-ropsten": "./script/ethereum.sh --env-file ./config/ropsten/.env run --use-acc-at-pos 0 --wait-sync && embark run ropsten",
+    "eth-ropsten": "./script/ethereum.sh --env-file ./config/ropsten/.env run",
+    "list-accs-ropsten": "./script/ethereum.sh --env-file ./config/ropsten/.env --list-accounts",
+    "new-acc-ropsten": "./script/ethereum.sh --env-file ./config/ropsten/.env --new-account",
+    "wait-ropsten": "./script/ethereum.sh --env-file ./config/ropsten/.env --wait-sync",
+    "upload-ropsten": "./script/ethereum.sh --env-file ./config/ropsten/.env run --wait-sync && embark upload ropsten"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +35,6 @@
   "dependencies": {
     "bootstrap": "^4.5.2",
     "classnames": "^2.2.6",
-    "env-cmd": "^10.1.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-datetime": "^3.0.4",
